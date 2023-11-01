@@ -4,29 +4,31 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Ground Movement")]
     public float moveSpeed;
-    public Transform orientation;
     public float groundDrag;
 
+    [Header("Air Movement")]
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
-    bool readyToJump;
 
-    // Input Variables
-    public KeyCode jumpKey;
-
-    // Ground Check Variables
+    [Header("Reference Setup")]
     public float playerHeight;
+    public KeyCode jumpKey;
     public LayerMask ground;
-    bool grounded;
+    public Transform orientation;
 
+    // Private Variables
     private Vector3 moveVector;
 
     private float horizontal;
     private float vertical;
 
     private Rigidbody rb;
+
+    bool grounded;
+    bool readyToJump;
     // Start is called before the first frame update
     void Start()
     {
