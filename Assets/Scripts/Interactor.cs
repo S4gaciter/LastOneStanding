@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Interactor : MonoBehaviour
 {
-    public float distance;
+    float distance = 3.0f;
     public Transform origin;
     public LayerMask interactible;
     public KeyCode interactionKey;
+    public Text uiText;
 
     private Ray ray;
 
     // Update is called once per frame
     void Update()
     {
+        uiText.enabled = false;
         ray.origin = transform.position;
         ray.direction = transform.forward;
         CheckForInteractibles();
@@ -23,16 +26,22 @@ public class Interactor : MonoBehaviour
     {
         if (Physics.Raycast(ray, out RaycastHit hit, distance, interactible))
         {
-            Debug.Log(hit.collider.gameObject.name + " was hit!");
+            if (hit.transform.gameObject.GetComponent<Interactible>() != null)
+            {
+                Interactible data = hit.transform.gameObject.GetComponent<Interactible>();
+
+                uiText.text = data.interactionText;
+                uiText.enabled = true;
+                if (Input.GetKeyDown(interactionKey))
+                {
+                    data.ReceiveInteraction();
+                }
+            }
+            else { Debug.Log("Interactor hit interactible, but interactible did not have Interactible component"); }
         }
-
-    }
-
-
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(ray);
+        else
+        {
+            uiText.enabled = false;
+        }
     }
 }

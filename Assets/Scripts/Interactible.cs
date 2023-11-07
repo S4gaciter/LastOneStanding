@@ -6,17 +6,26 @@ using UnityEngine.UI;
 public class Interactible : MonoBehaviour
 {
     public string interactionText;
-    public Text textObj;
-    
-    // Start is called before the first frame update
-    void Start()
+    public InteractionType interactType;
+
+    public void ReceiveInteraction()
     {
-        
+        switch (interactType)
+        {
+            // Add Interaction Functions Here
+            case InteractionType.Test:
+                Debug.Log("Interacted with " + gameObject.name);
+                break;
+            case InteractionType.Door:
+                Destroy(gameObject);
+                break;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public enum InteractionType
     {
-        
+        Test,
+        Weapon,
+        Door
     }
 }
