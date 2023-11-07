@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Ground Movement")]
-    public float moveSpeed;
-    public float groundDrag;
-
-    [Header("Air Movement")]
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
-
     [Header("Reference Setup")]
+    public PlayerStats stats;
     public float playerHeight;
     public KeyCode jumpKey;
     public LayerMask ground;
@@ -48,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (grounded)
         {
-            rb.drag = groundDrag;
+            rb.drag = stats.groundDrag;
         }
         else
         {
@@ -72,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
 
             Jump();
 
-            Invoke(nameof(ResetJump), jumpCooldown);
+            Invoke(nameof(ResetJump), stats.jumpCooldown);
         }
     }
 
@@ -83,13 +75,13 @@ public class PlayerMovement : MonoBehaviour
         // On ground
         if (grounded)
         {
-            rb.AddForce(moveVector.normalized * moveSpeed * 10f, ForceMode.Force);
+            rb.AddForce(moveVector.normalized * stats.moveSpeed * 10f, ForceMode.Force);
         }
 
         // In air
         else if (!grounded)
         {
-            rb.AddForce(moveVector.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            rb.AddForce(moveVector.normalized * stats.moveSpeed * 10f * stats.airMultiplier, ForceMode.Force);
         }
     }
     private void Jump()
@@ -97,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
         // Reset y velocity
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        rb.AddForce(transform.up * stats.jumpForce, ForceMode.Impulse);
     }
 
     private void ResetJump()
@@ -109,9 +101,9 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        if (flatVel.magnitude > moveSpeed)
+        if (flatVel.magnitude > stats.moveSpeed)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
+            Vector3 limitedVel = flatVel.normalized * stats.moveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
