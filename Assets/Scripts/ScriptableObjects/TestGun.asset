@@ -15,6 +15,10 @@ MonoBehaviour:
   gunName: Test
   damage: 5
   range: 40
-  currentAmmo: 100
+  currentAmmo: 990
   maxAmmo: 999
   magazineSize: 10
+  currentMag: 10
+  fireRate: 0.2
+  reloadTime: 0.6
+  automatic: 1

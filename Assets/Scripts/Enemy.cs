@@ -15,7 +15,16 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (health == 0)
+        {
+            OnDeath();
+        }
+    }
+
+    void OnDeath()
+    {
+        Debug.Log("Enemy died, resetting health to " + maxHealth.ToString("F2"));
+        health = maxHealth;
     }
 
     public void RecieveDamage(float d)

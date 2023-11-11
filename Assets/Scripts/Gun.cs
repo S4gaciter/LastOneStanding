@@ -1,27 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gun : MonoBehaviour
 {
-    public Transform playerOrigin;
     public Transform barrelOrigin;
     public LayerMask enemyLayer;
+    public Text uiText;
 
     [SerializeField] GunStats stats;
+
+    bool firing = false;
+    bool reloading = false;
+    private void Start()
+    {
+        UpdateGunUI();
+        stats.currentAmmo = stats.maxAmmo;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (stats.automatic)
         {
-            Shoot();
+            if (Input.GetMouseButton(0) && !firing && !reloading)
+            {
+                Shoot();
+            }
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0) && !firing && !reloading)
+            {
+                Shoot();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.R) && stats.currentMag < stats.magazineSize && !reloading)
+        {
+            Reload();
         }
     }
 
     public void Shoot()
     {
-        if (Physics.Raycast(playerOrigin.position, playerOrigin.forward, out RaycastHit hit, stats.range, enemyLayer))
+        if (Physics.Raycast(barrelOrigin.position, barrelOrigin.forward, out RaycastHit hit, stats.range, enemyLayer))
         {
             if (hit.transform.gameObject.GetComponent<Enemy>() != null)
             {
@@ -29,11 +52,38 @@ public class Gun : MonoBehaviour
                 enemy.RecieveDamage(stats.damage);
             }
         }
+        stats.currentMag--;
+        stats.currentAmmo--;
+        UpdateGunUI();
+        firing = true;
+        Invoke(nameof(RefreshFiring), stats.fireRate);
+    }
+
+    void Reload()
+    {
+        reloading = true;
+        Invoke(nameof(RefreshReload), stats.reloadTime);
+    }
+
+    void UpdateGunUI()
+    {
+        uiText.text = stats.currentMag.ToString() + "/" + (stats.currentAmmo - stats.currentMag).ToString();
+    }
+
+    void RefreshFiring()
+    {
+        firing = false;
+    }
+    void RefreshReload()
+    {
+        reloading = false;
+        stats.currentMag = stats.magazineSize;
+        UpdateGunUI();
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(barrelOrigin.position, playerOrigin.forward * stats.range);
+        Gizmos.DrawRay(barrelOrigin.position, barrelOrigin.forward * stats.range);
     }
 }
