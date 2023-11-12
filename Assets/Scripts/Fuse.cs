@@ -17,20 +17,22 @@ public class Fuse : MonoBehaviour
 
     void Detonate()
     {
-        if (Physics.SphereCast(transform.position, explosionRadius, Vector3.forward, out RaycastHit hit, 0, enemyLayer))
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, enemyLayer);
+
+        foreach(Collider collider in colliders)
         {
-            RaycastHit[] hits = Physics.SphereCastAll(transform.position, explosionRadius, Vector3.forward, 0, enemyLayer);
-            for (int i = 0; i < hits.Length; i++)
+            Enemy enemy = collider.gameObject.GetComponent<Enemy>();
+            if (enemy != null)
             {
-                if (hits[i].transform.gameObject.GetComponent<Enemy>() != null)
-                {
-                    Debug.Log(hits[i].transform.gameObject.name + " took " + explosionDamage + " from an explosive.");
-                    Enemy enemy = hit.transform.gameObject.GetComponent<Enemy>();
-                    enemy.RecieveDamage(explosionDamage);
-                }
+                enemy.RecieveDamage(explosionDamage);
             }
         }
 
+        RemoveExplosive();
+    }
+
+    void RemoveExplosive()
+    {
         Destroy(gameObject);
     }
 

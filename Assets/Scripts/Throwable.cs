@@ -25,7 +25,9 @@ public class Throwable : MonoBehaviour
 
     void SpawnProjectile()
     {
-        GameObject projectile = Instantiate(projectilePrefab, gameObject.transform);
+        Vector3 spawn = transform.position;
+        Quaternion spawnRotation = transform.rotation;
+        GameObject projectile = Instantiate(projectilePrefab, spawn, spawnRotation);
 
         if (projectile.GetComponent<Rigidbody>() != null)
         {

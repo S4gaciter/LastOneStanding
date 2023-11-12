@@ -109,8 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec79facd351f2d42a508cfe346a23f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 5
-  explosionRadius: 30
+  lifetime: 4
+  explosionRadius: 3
   explosionDamage: 60
   enemyLayer:
     serializedVersion: 2
