@@ -1,20 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CreditsManager : MonoBehaviour
 {
-    public int currentCredits = 500;
-    private int maxCredits = 1000000;
+    private int currentCredits = 500;
+    private const int maxCredits = 999999;
+    private Text creditsText;
 
-    void AddCredits(int credits)
+    private void Start()
+    {
+        creditsText = GameObject.Find("CreditsText").GetComponent<Text>();
+        UpdateCreditUI();
+    }
+    public void AddCredits(int credits)
     {
         currentCredits += credits;
+        UpdateCreditUI();
     }
 
-    void RemoveCredits(int credits)
+    public void RemoveCredits(int credits)
     {
         currentCredits -= credits;
         currentCredits = Mathf.Clamp(currentCredits, 0, maxCredits);
+        UpdateCreditUI();
+    }
+    public int GetCurrentCredits()
+    {
+        return currentCredits;
+    }
+
+    void UpdateCreditUI()
+    {
+        creditsText.text = currentCredits.ToString();
     }
 }

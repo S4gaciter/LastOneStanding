@@ -7,7 +7,7 @@ public class Interactor : MonoBehaviour
 {
     float distance = 3.0f;
     public Transform origin;
-    public LayerMask interactible;
+    LayerMask interactible;
     public KeyCode interactionKey;
     public Text uiText;
 
@@ -17,6 +17,7 @@ public class Interactor : MonoBehaviour
     void Update()
     {
         uiText.enabled = false;
+        interactible = LayerMask.GetMask("Interactible");
         ray.origin = transform.position;
         ray.direction = transform.forward;
         CheckForInteractibles();

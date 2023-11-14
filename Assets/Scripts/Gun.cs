@@ -7,14 +7,15 @@ public class Gun : MonoBehaviour
 {
     public Transform barrelOrigin;
     public LayerMask enemyLayer;
-    public Text uiText;
+    private Text uiText;
 
-    [SerializeField] GunStats stats;
+    public GunStats stats;
 
     bool firing = false;
     bool reloading = false;
     private void Start()
     {
+        uiText = GameObject.Find("AmmoText").GetComponent<Text>();
         UpdateGunUI();
         stats.currentAmmo = stats.maxAmmo;
     }
@@ -24,14 +25,14 @@ public class Gun : MonoBehaviour
     {
         if (stats.automatic)
         {
-            if (Input.GetMouseButton(0) && !firing && !reloading)
+            if (Input.GetMouseButton(0) && !firing && !reloading && stats.currentMag > 0)
             {
                 Shoot();
             }
         }
         else
         {
-            if (Input.GetMouseButtonDown(0) && !firing && !reloading)
+            if (Input.GetMouseButtonDown(0) && !firing && !reloading && stats.currentMag > 0)
             {
                 Shoot();
             }
@@ -79,6 +80,13 @@ public class Gun : MonoBehaviour
         reloading = false;
         stats.currentMag = stats.magazineSize;
         UpdateGunUI();
+    }
+
+    public void SetText(Text text)
+    {
+        {
+            uiText = text;
+        }
     }
 
     private void OnDrawGizmos()

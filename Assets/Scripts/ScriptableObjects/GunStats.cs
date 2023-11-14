@@ -12,14 +12,19 @@ public class GunStats : ScriptableObject
     }
 
     public string gunName;
+    
+    [Header("Weapon Stats")]
     public float damage;
     public float range;
-    public int currentAmmo;
-    public int maxAmmo;
-    public int magazineSize;
-    public int currentMag;
     public float fireRate;
     public float reloadTime;
 
+    [Header("Ammo Capacity")]
+    public int maxAmmo;
+    public int magazineSize;
+    public int currentAmmo;
+    public int currentMag;
+
+    [Header("Additional Properties")]
     public bool automatic;
 }
