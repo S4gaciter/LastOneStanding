@@ -27,9 +27,11 @@ public class Interactible : MonoBehaviour
             case InteractionType.Weapon:
                 {
                     WeaponEntity buyable = gameObject.GetComponent<WeaponEntity>();
+                    Inventory inventory = GameObject.Find("WeaponHandle").GetComponent<Inventory>();
                     if (credits.GetCurrentCredits() >= buyable.cost)
                     {
                         credits.RemoveCredits(buyable.cost);
+                        inventory.SwapWeapon(buyable.weapon);
                     }
                 }
                 break;

@@ -7,10 +7,10 @@ public class WeaponEntity : MonoBehaviour
     public int cost;
     public GameObject weapon;
 
-    private WeaponHandler handler;
+    private Inventory inventory;
     private void Start()
     {
-        handler = GameObject.Find("WeaponHandle").GetComponent<WeaponHandler>();
+        inventory = GameObject.Find("WeaponHandle").GetComponent<Inventory>();
     }
 
     public string GetWeaponName()
@@ -20,6 +20,6 @@ public class WeaponEntity : MonoBehaviour
 
     public void BuyWeapon()
     {
-        handler.ChangeWeapon(weapon);
+        inventory.SwapWeapon(weapon);
     }
 }

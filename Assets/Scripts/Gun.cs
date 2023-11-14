@@ -37,7 +37,7 @@ public class Gun : MonoBehaviour
                 Shoot();
             }
         }
-        if (Input.GetKeyDown(KeyCode.R) && stats.currentMag < stats.magazineSize && !reloading)
+        if ((Input.GetKeyDown(KeyCode.R) && stats.currentMag < stats.magazineSize && !reloading) || Input.GetMouseButton(0) && !reloading && stats.currentMag == 0)
         {
             Reload();
         }
@@ -66,7 +66,7 @@ public class Gun : MonoBehaviour
         Invoke(nameof(RefreshReload), stats.reloadTime);
     }
 
-    void UpdateGunUI()
+    public void UpdateGunUI()
     {
         uiText.text = stats.currentMag.ToString() + "/" + (stats.currentAmmo - stats.currentMag).ToString();
     }
