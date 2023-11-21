@@ -6,6 +6,7 @@ public class Inventory : MonoBehaviour
 {
     public GameObject[] inventory;
     int currentWeapon = 0;
+    int inventoryCap = 2;
     // Start is called before the first frame update
     void Start()
     {
@@ -59,14 +60,7 @@ public class Inventory : MonoBehaviour
     public void SwapWeapon(GameObject weapon)
     {
         // Check to see if the weapon is already in the player's inventory
-        bool shouldSwap = true;
-        for (int i = 0; i < inventory.Length; i++)
-        {
-            if (inventory[i] == weapon)
-            {
-                shouldSwap = false;
-            }
-        }
+        bool shouldSwap = HasWeapon(weapon);
 
         if (shouldSwap)
         {
@@ -85,6 +79,19 @@ public class Inventory : MonoBehaviour
 
     void RemoveFromInventory()
     {
+        inventory[currentWeapon] = null;
         Destroy(transform.GetChild(currentWeapon).gameObject);
+    }
+
+    public bool HasWeapon(GameObject weapon)
+    {
+        foreach (GameObject obj in inventory)
+        {
+            if (obj.name == weapon.name)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -19,6 +19,6 @@ MonoBehaviour:
   reloadTime: 0.6
   maxAmmo: 999
   magazineSize: 10
-  currentAmmo: 999
-  currentMag: 10
+  currentAmmo: 998
+  currentMag: 8
   automatic: 0

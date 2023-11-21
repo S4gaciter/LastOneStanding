@@ -6,12 +6,15 @@ using UnityEngine.UI;
 public class Interactible : MonoBehaviour
 {
     public string interactionText;
-    public CreditsManager credits;
-    public InteractionType interactType;
+    [SerializeField] private InteractionType interactType;
+    
+    CreditsManager credits;
+    UIManager uiManager;
 
     public void Start()
     {
         credits = GameObject.Find("Player").GetComponent<CreditsManager>();
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
     }
     public void ReceiveInteraction()
     {
@@ -26,13 +29,19 @@ public class Interactible : MonoBehaviour
                 break;
             case InteractionType.Weapon:
                 {
-                    WeaponEntity buyable = gameObject.GetComponent<WeaponEntity>();
                     Inventory inventory = GameObject.Find("WeaponHandle").GetComponent<Inventory>();
-                    if (credits.GetCurrentCredits() >= buyable.cost)
+                    WeaponEntity buyable = gameObject.GetComponent<WeaponEntity>();
+                    if (credits.GetCurrentCredits() >= buyable.cost && !inventory.HasWeapon(buyable.weapon))
                     {
                         credits.RemoveCredits(buyable.cost);
                         inventory.SwapWeapon(buyable.weapon);
                     }
+                }
+                break;
+            case InteractionType.Shop:
+                {
+                    uiManager.TogglePlayerUI();
+                    uiManager.ToggleShopUI();
                 }
                 break;
         }
@@ -42,6 +51,7 @@ public class Interactible : MonoBehaviour
     {
         Test,
         Weapon,
-        Door
+        Door,
+        Shop
     }
 }

@@ -9,14 +9,14 @@ public class Interactor : MonoBehaviour
     public Transform origin;
     LayerMask interactible;
     public KeyCode interactionKey;
-    public Text uiText;
+    UIManager uiManager;
 
     private Ray ray;
 
     // Update is called once per frame
     void Update()
     {
-        uiText.enabled = false;
+        uiManager.HideInteractionText();
         interactible = LayerMask.GetMask("Interactible");
         ray.origin = transform.position;
         ray.direction = transform.forward;
@@ -31,8 +31,8 @@ public class Interactor : MonoBehaviour
             {
                 Interactible data = hit.transform.gameObject.GetComponent<Interactible>();
 
-                uiText.text = data.interactionText;
-                uiText.enabled = true;
+                uiManager.SetInteractionText(data.interactionText);
+                uiManager.ShowInteractionText();
                 if (Input.GetKeyDown(interactionKey))
                 {
                     data.ReceiveInteraction();
@@ -42,7 +42,7 @@ public class Interactor : MonoBehaviour
         }
         else
         {
-            uiText.enabled = false;
+            uiManager.HideInteractionText();
         }
     }
 }
