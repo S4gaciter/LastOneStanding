@@ -15,6 +15,7 @@ public class CreditsManager : MonoBehaviour
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         uiManager.SetCreditText(currentCredits);
     }
+
     public void AddCredits(int credits)
     {
         currentCredits += credits;

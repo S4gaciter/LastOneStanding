@@ -13,10 +13,14 @@ public class Interactor : MonoBehaviour
 
     private Ray ray;
 
+    private void Start()
+    {
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        uiManager.HideInteractionText();
+    }
     // Update is called once per frame
     void Update()
     {
-        uiManager.HideInteractionText();
         interactible = LayerMask.GetMask("Interactible");
         ray.origin = transform.position;
         ray.direction = transform.forward;

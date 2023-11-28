@@ -10,20 +10,14 @@ public class UIManager : MonoBehaviour
     Text interactionText;
     Text creditText;
 
-    // Shop UI
-    Canvas shopUI;
-
     //Initialization
     private void Start()
     {
         playerUI = GameObject.Find("PlayerUI").GetComponent<Canvas>();
-        shopUI = GameObject.Find("ShopUI").GetComponent<Canvas>();
 
         playerUI.gameObject.SetActive(true);
         interactionText = GameObject.Find("InteractionText").GetComponent<Text>();
         creditText = GameObject.Find("CreditsText").GetComponent<Text>();
-
-        shopUI.gameObject.SetActive(false);
     }
 
     // Toggle Functions
@@ -36,18 +30,6 @@ public class UIManager : MonoBehaviour
         else
         {
             playerUI.gameObject.SetActive(true);
-        }
-    }
-
-    public void ToggleShopUI()
-    {
-        if (shopUI.gameObject.activeSelf)
-        {
-            shopUI.gameObject.SetActive(false);
-        }
-        else
-        {
-            shopUI.gameObject.SetActive(true);
         }
     }
 

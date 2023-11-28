@@ -25,9 +25,8 @@ public class Enemy : MonoBehaviour
 
     void OnDeath()
     {
-        Debug.Log("Enemy died, resetting health to " + maxHealth.ToString("F2"));
-        health = maxHealth;
         credits.AddCredits(50);
+        Destroy(gameObject);
     }
 
     public void RecieveDamage(float d)

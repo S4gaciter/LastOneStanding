@@ -38,12 +38,6 @@ public class Interactible : MonoBehaviour
                     }
                 }
                 break;
-            case InteractionType.Shop:
-                {
-                    uiManager.TogglePlayerUI();
-                    uiManager.ToggleShopUI();
-                }
-                break;
         }
     }
 
