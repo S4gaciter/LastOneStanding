@@ -17,8 +17,9 @@ MonoBehaviour:
   range: 40
   fireRate: 0.2
   reloadTime: 0.6
+  scopeMultiplier: 1.5
   maxAmmo: 999
   magazineSize: 10
   currentAmmo: 998
-  currentMag: 8
+  currentMag: 10
   automatic: 0

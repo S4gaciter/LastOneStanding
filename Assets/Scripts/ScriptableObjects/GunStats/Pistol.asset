@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcb38becbbb68054a930320110dbccc3, type: 3}
-  m_Name: TestGun2
+  m_Name: Pistol
   m_EditorClassIdentifier: 
-  gunName: TestRifle
-  damage: 10
-  range: 60
-  fireRate: 0.1
-  reloadTime: 2.8
+  gunName: Pistol
+  damage: 18
+  range: 100
+  fireRate: 0.2
+  reloadTime: 1.2
   scopeMultiplier: 1.1
-  maxAmmo: 300
-  magazineSize: 30
-  currentAmmo: 286
-  currentMag: 30
-  automatic: 1
+  maxAmmo: 80
+  magazineSize: 8
+  currentAmmo: 80
+  currentMag: 8
+  automatic: 0

@@ -7,13 +7,15 @@ public class MainMenuManager : MonoBehaviour
 {
     Canvas MainMenuUI;
     Canvas SettingsUI;
-    // Start is called before the first frame update
-    void Start()
+    // Initialization
+    void Awake()
     {
         MainMenuUI = GameObject.Find("MainMenuUI").GetComponent<Canvas>();
         SettingsUI = GameObject.Find("SettingsUI").GetComponent<Canvas>();
-
-        Invoke(nameof(DefaultMenu), 0.01f);
+    }
+    void Start()
+    {
+        DefaultMenu();
     }
 
     private void Update()

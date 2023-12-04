@@ -10,11 +10,13 @@ public class Interactible : MonoBehaviour
     
     CreditsManager credits;
     UIManager uiManager;
+    Inventory inventory;
 
-    public void Start()
+    public void Awake()
     {
         credits = GameObject.Find("Player").GetComponent<CreditsManager>();
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        inventory = GameObject.Find("WeaponHandle").GetComponent<Inventory>();
     }
     public void ReceiveInteraction()
     {
@@ -22,19 +24,19 @@ public class Interactible : MonoBehaviour
         {
             // Add Interaction Functions Here
             case InteractionType.Test:
-                Debug.Log("Interacted with " + gameObject.name);
+                interactionText = "Interact to get 100 points";
+                credits.AddCredits(100);
                 break;
             case InteractionType.Door:
                 Destroy(gameObject);
                 break;
             case InteractionType.Weapon:
                 {
-                    Inventory inventory = GameObject.Find("WeaponHandle").GetComponent<Inventory>();
                     WeaponEntity buyable = gameObject.GetComponent<WeaponEntity>();
                     if (credits.GetCurrentCredits() >= buyable.cost && !inventory.HasWeapon(buyable.weapon))
                     {
                         credits.RemoveCredits(buyable.cost);
-                        inventory.SwapWeapon(buyable.weapon);
+                        buyable.BuyWeapon();
                     }
                 }
                 break;

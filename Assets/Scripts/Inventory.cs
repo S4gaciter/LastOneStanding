@@ -4,30 +4,29 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public GameObject[] inventory;
+    public List<GameObject> inventory;
+    public GameObject startingWeapon;
     int currentWeapon = 0;
-    int inventoryCap = 2;
-    // Start is called before the first frame update
-    void Start()
+
+    // Initialization
+    void Awake()
+    {
+        inventory.Capacity = 2;
+        AddToInventory(startingWeapon);
+    }
+    private void Start()
     {
         inventory[currentWeapon].SetActive(true);
-        for (int i = 0; i < inventory.Length; i++)
-        {
-            if (i == currentWeapon)
-                inventory[i].SetActive(true);
-            else if (inventory[i] != null)
-                inventory[i].SetActive(false);
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.mouseScrollDelta.y > 0.1f)
+        if (Input.mouseScrollDelta.y > 0.1f && inventory.Count > 1)
         {
             NextWeapon();
         }
-        else if (Input.mouseScrollDelta.y < - 0.1f)
+        else if (Input.mouseScrollDelta.y < - 0.1f && inventory.Count > 1)
         {
             PreviousWeapon();
         }
@@ -37,7 +36,7 @@ public class Inventory : MonoBehaviour
     {
         inventory[currentWeapon].SetActive(false);
         currentWeapon++;
-        if (currentWeapon >= inventory.Length)
+        if (currentWeapon >= inventory.Count)
         {
             currentWeapon = 0;
         }
@@ -51,47 +50,34 @@ public class Inventory : MonoBehaviour
         currentWeapon--;
         if (currentWeapon < 0)
         {
-            currentWeapon = inventory.Length - 1;
+            currentWeapon = inventory.Count - 1;
         }
         inventory[currentWeapon].SetActive(true);
         inventory[currentWeapon].GetComponent<Gun>().UpdateGunUI();
     }
 
-    public void SwapWeapon(GameObject weapon)
+    public void AddToInventory(GameObject weapon)
     {
-        // Check to see if the weapon is already in the player's inventory
-        bool shouldSwap = HasWeapon(weapon);
-
-        if (shouldSwap)
+        inventory[currentWeapon].SetActive(false);
+        if (inventory.Count < inventory.Capacity)
         {
-            inventory[currentWeapon].SetActive(false);
-            RemoveFromInventory();
-            inventory[currentWeapon] = weapon;
-            AddToInventory(weapon);
-            inventory[currentWeapon].SetActive(true);
+            inventory.Add(weapon);
         }
-    }
-
-    void AddToInventory(GameObject weapon)
-    {
+        else
+        {
+            inventory[currentWeapon] = weapon;
+        }
         Instantiate(weapon, transform);
     }
 
-    void RemoveFromInventory()
+    public void RemoveFromInventory()
     {
-        inventory[currentWeapon] = null;
+        inventory.RemoveAt(currentWeapon);
         Destroy(transform.GetChild(currentWeapon).gameObject);
     }
 
     public bool HasWeapon(GameObject weapon)
     {
-        foreach (GameObject obj in inventory)
-        {
-            if (obj.name == weapon.name)
-            {
-                return true;
-            }
-        }
-        return false;
+        return inventory.Contains(weapon);
     }
 }

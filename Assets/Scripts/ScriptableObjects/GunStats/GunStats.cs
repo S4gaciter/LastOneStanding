@@ -18,6 +18,7 @@ public class GunStats : ScriptableObject
     public float range;
     public float fireRate;
     public float reloadTime;
+    public float scopeMultiplier;
 
     [Header("Ammo Capacity")]
     public int maxAmmo;

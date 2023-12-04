@@ -7,17 +7,33 @@ public class Gun : MonoBehaviour
 {
     public Transform barrelOrigin;
     public LayerMask enemyLayer;
-    private Text uiText;
+    private UIManager uiManager;
 
     public GunStats stats;
 
-    bool firing = false;
-    bool reloading = false;
+    Camera cam;
+    float fov;
+
+    bool ads;
+    bool firing;
+    bool reloading;
+
+    // Initialization
+    private void Awake()
+    {
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        cam = GameObject.Find("PlayerCamera").GetComponent<Camera>();
+
+        ads = false;
+        firing = false;
+        reloading = false;
+    }
     private void Start()
     {
-        uiText = GameObject.Find("AmmoText").GetComponent<Text>();
-        UpdateGunUI();
+        stats.currentMag = stats.magazineSize;
         stats.currentAmmo = stats.maxAmmo;
+        fov = cam.fieldOfView;
+        UpdateGunUI();
     }
 
     // Update is called once per frame
@@ -41,11 +57,15 @@ public class Gun : MonoBehaviour
         {
             Reload();
         }
+        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonUp(1))
+        {
+            ToggleADS();
+        }
     }
 
     public void Shoot()
     {
-        if (Physics.Raycast(barrelOrigin.position, barrelOrigin.forward, out RaycastHit hit, stats.range, enemyLayer))
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, stats.range, enemyLayer))
         {
             if (hit.transform.gameObject.GetComponent<Enemy>() != null)
             {
@@ -66,9 +86,24 @@ public class Gun : MonoBehaviour
         Invoke(nameof(RefreshReload), stats.reloadTime);
     }
 
+    void ToggleADS()
+    {
+        switch(ads)
+        {
+            case true:
+                cam.fieldOfView = fov;
+                ads = false;
+                break;
+            case false:
+                cam.fieldOfView = fov / stats.scopeMultiplier;
+                ads = true;
+                break;
+        }
+    }
+
     public void UpdateGunUI()
     {
-        uiText.text = stats.currentMag.ToString() + "/" + (stats.currentAmmo - stats.currentMag).ToString();
+        uiManager.SetAmmoText(stats.currentMag, stats.maxAmmo - stats.currentMag);
     }
 
     void RefreshFiring()
@@ -82,16 +117,9 @@ public class Gun : MonoBehaviour
         UpdateGunUI();
     }
 
-    public void SetText(Text text)
-    {
-        {
-            uiText = text;
-        }
-    }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(barrelOrigin.position, barrelOrigin.forward * stats.range);
+        Gizmos.DrawRay(cam.transform.position, cam.transform.forward * stats.range);
     }
 }
