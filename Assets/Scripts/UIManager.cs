@@ -8,18 +8,22 @@ public class UIManager : MonoBehaviour
     // Player/Main Gameplay UI
     Canvas playerUI;
     Text interactionText;
+    Text healthText;
     Text ammoText;
     Text creditText;
 
     //Initialization
     private void Awake()
     {
+        // Gameplay UI
         playerUI = GameObject.Find("PlayerUI").GetComponent<Canvas>();
 
         playerUI.gameObject.SetActive(true);
+
+        ammoText        = GameObject.Find("AmmoText").GetComponent<Text>();
+        healthText      = GameObject.Find("HealthText").GetComponent<Text>();
+        creditText      = GameObject.Find("CreditsText").GetComponent<Text>();
         interactionText = GameObject.Find("InteractionText").GetComponent<Text>();
-        ammoText = GameObject.Find("AmmoText").GetComponent<Text>();
-        creditText = GameObject.Find("CreditsText").GetComponent<Text>();
     }
 
     // Toggle Functions
@@ -45,7 +49,10 @@ public class UIManager : MonoBehaviour
     {
         creditText.text = amount.ToString();
     }
-
+    public void SetHealthText(float amount)
+    {
+        healthText.text = amount.ToString("F2");
+    }
     public void SetAmmoText(int curr, int max)
     {
         ammoText.text = $"{curr}/{max}";

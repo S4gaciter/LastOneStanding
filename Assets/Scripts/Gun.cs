@@ -53,10 +53,16 @@ public class Gun : MonoBehaviour
                 Shoot();
             }
         }
-        if ((Input.GetKeyDown(KeyCode.R) && stats.currentMag < stats.magazineSize && !reloading) || Input.GetMouseButton(0) && !reloading && stats.currentMag == 0)
+        // reload if reload button is pressed while current mag isn't full and not reloading
+        // OR left mouse button is held down while an automatic weapon runs out of ammo
+        // OR left mouse button is pressed while a non-automatic weapon's magazine is empty
+        if ((Input.GetKeyDown(KeyCode.R) && stats.currentMag < stats.magazineSize && !reloading) 
+            || (Input.GetMouseButton(0) && !reloading && stats.currentMag == 0 && stats.automatic)
+            || (Input.GetMouseButtonDown(0) && !reloading && stats.currentMag == 0 && !stats.automatic))
         {
             Reload();
         }
+
         if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonUp(1))
         {
             ToggleADS();
@@ -88,13 +94,13 @@ public class Gun : MonoBehaviour
 
     void ToggleADS()
     {
-        switch(ads)
+        switch(Input.GetMouseButton(1))
         {
-            case true:
+            case false:
                 cam.fieldOfView = fov;
                 ads = false;
                 break;
-            case false:
+            case true:
                 cam.fieldOfView = fov / stats.scopeMultiplier;
                 ads = true;
                 break;

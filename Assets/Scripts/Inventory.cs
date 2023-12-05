@@ -12,10 +12,10 @@ public class Inventory : MonoBehaviour
     void Awake()
     {
         inventory.Capacity = 2;
-        AddToInventory(startingWeapon);
     }
     private void Start()
     {
+        AddToInventory(startingWeapon);
         inventory[currentWeapon].SetActive(true);
     }
 
@@ -58,7 +58,10 @@ public class Inventory : MonoBehaviour
 
     public void AddToInventory(GameObject weapon)
     {
-        inventory[currentWeapon].SetActive(false);
+        if (inventory[currentWeapon] != null)
+        {
+            inventory[currentWeapon].SetActive(false);
+        }
         if (inventory.Count < inventory.Capacity)
         {
             inventory.Add(weapon);
