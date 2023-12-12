@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public GameManager gameManager;
     public enum HealState
     {
         Full,
@@ -12,6 +13,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
     float health;
+    float death = 0.0f;
     public int maxHealth;
     public float regenMultiplier;
 
@@ -43,10 +45,6 @@ public class PlayerHealth : MonoBehaviour
         {
             DefaultState();
         }
-        if (health <= 0)
-        {
-            GameManager.Instance.EndGame();
-        }
     }
 
     public void DefaultState()
@@ -71,5 +69,9 @@ public class PlayerHealth : MonoBehaviour
         healTimer = 2.0f;
         healState = HealState.Waiting;
         UIManager.Instance.SetHealthText(health);
+        if (health <= death)
+        {
+            gameManager.EndGame();
+        }
     }
 }

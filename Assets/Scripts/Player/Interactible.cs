@@ -30,6 +30,7 @@ public class Interactible : MonoBehaviour
                 if (CreditsManager.Instance.GetCurrentCredits() >= cost)
                 {
                     CreditsManager.Instance.RemoveCredits(cost);
+                    GetComponent<Door>().ActivateBlockedSpawners();
                     Destroy(gameObject);
                 }
                 break;

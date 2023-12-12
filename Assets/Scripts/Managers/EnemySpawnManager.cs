@@ -66,8 +66,21 @@ public class EnemySpawnManager : MonoBehaviour
     Transform GetRandomSpawn()
     {
         int i;
-        i = Random.Range(0, spawnPositions.Count);
+        i = Random.Range(0, GetActiveSpawners());
         return spawnPositions[i];
+    }
+
+    int GetActiveSpawners()
+    {
+        int res = 0;
+        for (int i = 0; i < spawnPositions.Count; i++)
+        {
+            if (spawnPositions[i].gameObject.activeSelf)
+            {
+                res++;
+            }
+        }
+        return res;
     }
 
     public void NewRound()

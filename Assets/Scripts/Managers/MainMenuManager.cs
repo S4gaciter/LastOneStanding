@@ -9,12 +9,10 @@ public class MainMenuManager : MonoBehaviour
     public Canvas MainMenuUI;
     public Canvas SettingsUI;
     // Initialization
-    void Awake()
-    {
-
-    }
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
         Instance = this;
         DefaultMenu();
     }
@@ -56,5 +54,10 @@ public class MainMenuManager : MonoBehaviour
     public void HideSettingsMenu()
     {
         SettingsUI.gameObject.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
