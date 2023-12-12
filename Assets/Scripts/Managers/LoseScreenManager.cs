@@ -5,11 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class LoseScreenManager : MonoBehaviour
 {
+    public static LoseScreenManager Instance;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    void Start() => Instance = this;
 
     // Update is called once per frame
     void Update()

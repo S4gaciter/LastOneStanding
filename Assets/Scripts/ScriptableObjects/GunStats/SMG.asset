@@ -22,4 +22,10 @@ MonoBehaviour:
   magazineSize: 30
   currentAmmo: 360
   currentMag: 30
+  soundBank:
+  - {fileID: 8300000, guid: 7e0064eaa0ca9d443b0fa78105822423, type: 3}
+  - {fileID: 8300000, guid: 3224ac48be038e14ab5af8b828d66249, type: 3}
+  - {fileID: 8300000, guid: 2dd5c3eef32d2cd47bde18243fc4cec5, type: 3}
+  - {fileID: 8300000, guid: 62703af103c4a5743aae294c10425fd0, type: 3}
+  reloadSound: {fileID: 8300000, guid: 73cb9d1aed4293c41b47f91275beda6a, type: 3}
   automatic: 1

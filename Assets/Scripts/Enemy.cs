@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
     {
         Debug.Log("Attempted to Attack");
         attackCooldown = true;
-        if (Physics.SphereCast(transform.position, 1.0f, transform.forward, out RaycastHit hit, 1.0f, playerLayer.value))
+        if (Physics.SphereCast(transform.position, 2.0f, transform.forward, out RaycastHit hit, 1.0f, playerLayer.value))
         {
             PlayerHealth health = GameObject.Find("Player").GetComponent<PlayerHealth>();
             health.ReceiveDamage(attack);
@@ -83,6 +83,6 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(transform.position, 1.0f);
+        Gizmos.DrawSphere(transform.position, 2.0f);
     }
 }

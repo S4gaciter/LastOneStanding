@@ -26,6 +26,10 @@ public class GunStats : ScriptableObject
     public int currentAmmo;
     public int currentMag;
 
+    [Header("Audio")]
+    public AudioClip[] soundBank;
+    public AudioClip reloadSound;
+
     [Header("Additional Properties")]
     public bool automatic;
 }

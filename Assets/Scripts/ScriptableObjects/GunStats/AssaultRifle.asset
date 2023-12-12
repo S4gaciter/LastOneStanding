@@ -22,4 +22,8 @@ MonoBehaviour:
   magazineSize: 45
   currentAmmo: 450
   currentMag: 45
+  soundBank:
+  - {fileID: 8300000, guid: 2d75f9f8906d4d04aabcb2c7492acd3e, type: 3}
+  - {fileID: 8300000, guid: 24b302caaf86e494e967fc40900cc744, type: 3}
+  reloadSound: {fileID: 8300000, guid: 523e3695daa2f2b43ace10896b4cc19b, type: 3}
   automatic: 1

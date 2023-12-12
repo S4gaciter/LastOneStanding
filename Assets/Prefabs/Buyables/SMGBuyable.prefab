@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2106338182044951659}
   - component: {fileID: 298192178176292240}
   - component: {fileID: 7752215098425384535}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SMGBuyable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 1534323774997697843}
   - component: {fileID: 4439471729446661241}
   - component: {fileID: 916929086258776301}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}

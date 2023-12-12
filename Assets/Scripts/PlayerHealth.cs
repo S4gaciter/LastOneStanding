@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public enum HealState
+    {
+        Full,
+        Waiting,
+        Healing
+    }
+
     float health;
     public int maxHealth;
+    public float regenMultiplier;
 
+    private bool healFlag;
     private float healTimer;
-    private bool healing;
+    HealState healState;
 
     GameManager gameManager;
 
@@ -19,32 +28,31 @@ public class PlayerHealth : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
 
-        healing = false;
-        healTimer = 2.0f;
     }
     // Start is called before the first frame update
     void Start()
     {
-        health = maxHealth;
+        DefaultState();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!healing && health == maxHealth)
+        if (healState == HealState.Waiting)
         {
             healTimer -= Time.deltaTime;
+            if (healTimer < 0)
+            {
+                healState = HealState.Healing;
+            }
         }
-        else if (healing && health != maxHealth)
+        else if (healState == HealState.Healing)
         {
-            health += Time.deltaTime;
-            Mathf.Clamp(health, 0, maxHealth);
-            uiManager.SetHealthText(health);
+            RegenerateHealthTick();
         }
-        else if (healing && health == maxHealth)
+        else if (healState == HealState.Full && !healFlag)
         {
-            healing = false;
-            healTimer = 2.0f;
+            DefaultState();
         }
         if (health <= 0)
         {
@@ -52,10 +60,27 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void DefaultState()
+    {
+        healState = HealState.Full;
+        healTimer = 2.0f;
+        health = maxHealth;
+        healFlag = true;
+    }
+
+    public void RegenerateHealthTick()
+    {
+        health += Time.deltaTime * regenMultiplier;
+        health = Mathf.Clamp(health, 0, maxHealth);
+        uiManager.SetHealthText(health);
+    }
+
     public void ReceiveDamage(int amount)
     {
         health -= amount;
-        healing = false;
+        healFlag = false;
+        healTimer = 2.0f;
+        healState = HealState.Waiting;
         uiManager.SetHealthText(health);
     }
 }

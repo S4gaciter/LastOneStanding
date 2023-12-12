@@ -5,18 +5,20 @@ using UnityEngine.UI;
 
 public class Interactible : MonoBehaviour
 {
-    public string interactionText;
+    public int cost;
+    [HideInInspector] public string interactionText;
     [SerializeField] private InteractionType interactType;
     
-    CreditsManager credits;
-    UIManager uiManager;
     Inventory inventory;
 
     public void Awake()
     {
-        credits = GameObject.Find("Player").GetComponent<CreditsManager>();
-        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         inventory = GameObject.Find("WeaponHandle").GetComponent<Inventory>();
+    }
+
+    public void Start()
+    {
+        SetInteractibleText();
     }
     public void ReceiveInteraction()
     {
@@ -24,21 +26,41 @@ public class Interactible : MonoBehaviour
         {
             // Add Interaction Functions Here
             case InteractionType.Test:
-                interactionText = "Interact to get 100 points";
-                credits.AddCredits(100);
+                CreditsManager.Instance.AddCredits(100);
                 break;
             case InteractionType.Door:
-                Destroy(gameObject);
+                if (CreditsManager.Instance.GetCurrentCredits() >= cost)
+                {
+                    CreditsManager.Instance.RemoveCredits(cost);
+                    Destroy(gameObject);
+                }
                 break;
             case InteractionType.Weapon:
                 {
                     WeaponEntity buyable = gameObject.GetComponent<WeaponEntity>();
-                    if (credits.GetCurrentCredits() >= buyable.cost && !inventory.HasWeapon(buyable.weapon))
+                    if (CreditsManager.Instance.GetCurrentCredits() >= buyable.cost)
                     {
-                        credits.RemoveCredits(buyable.cost);
+                        CreditsManager.Instance.RemoveCredits(buyable.cost);
                         buyable.BuyWeapon();
                     }
                 }
+                break;
+        }
+    }
+
+    void SetInteractibleText()
+    {
+        switch (interactType)
+        {
+            case InteractionType.Test:
+                interactionText = $"F - Gain 100 points";
+                break;
+            case InteractionType.Weapon:
+                WeaponEntity buyable = gameObject.GetComponent<WeaponEntity>();
+                interactionText = $"F - Buy {buyable.GetWeaponName()} for {cost}";
+                break;
+            case InteractionType.Door:
+                interactionText = $"F - Open door for {cost}";
                 break;
         }
     }

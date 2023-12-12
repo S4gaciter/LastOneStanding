@@ -11,25 +11,24 @@ public class Interactor : MonoBehaviour
     public KeyCode interactionKey;
     UIManager uiManager;
 
-    private Ray ray;
-
-    private void Start()
+    private void Awake()
     {
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+    }
+    private void Start()
+    {
         uiManager.HideInteractionText();
     }
     // Update is called once per frame
     void Update()
     {
         interactible = LayerMask.GetMask("Interactible");
-        ray.origin = transform.position;
-        ray.direction = transform.forward;
         CheckForInteractibles();
     }
 
     void CheckForInteractibles()
     {
-        if (Physics.Raycast(ray, out RaycastHit hit, distance, interactible))
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, distance, interactible))
         {
             if (hit.transform.gameObject.GetComponent<Interactible>() != null)
             {

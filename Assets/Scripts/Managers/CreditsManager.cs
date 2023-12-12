@@ -8,25 +8,25 @@ public class CreditsManager : MonoBehaviour
     int currentCredits = 500;
     const int maxCredits = 999999;
 
-    UIManager uiManager;
+    public static CreditsManager Instance;
 
     private void Start()
     {
-        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
-        uiManager.SetCreditText(currentCredits);
+        Instance = this;
+        UIManager.Instance.SetCreditText(currentCredits);
     }
 
     public void AddCredits(int credits)
     {
         currentCredits += credits;
-        uiManager.SetCreditText(currentCredits);
+        UIManager.Instance.SetCreditText(currentCredits);
     }
 
     public void RemoveCredits(int credits)
     {
         currentCredits -= credits;
         currentCredits = Mathf.Clamp(currentCredits, 0, maxCredits);
-        uiManager.SetCreditText(currentCredits);
+        UIManager.Instance.SetCreditText(currentCredits);
     }
     public int GetCurrentCredits()
     {

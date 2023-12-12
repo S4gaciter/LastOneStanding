@@ -5,26 +5,24 @@ using UnityEngine.UI;
 
 public class Gun : MonoBehaviour
 {
+    // Barrel position used for visual effects
     public Transform barrelOrigin;
+
     public LayerMask enemyLayer;
-    private UIManager uiManager;
 
     public GunStats stats;
 
     Camera cam;
     float fov;
 
-    bool ads;
     bool firing;
     bool reloading;
 
     // Initialization
     private void Awake()
     {
-        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         cam = GameObject.Find("PlayerCamera").GetComponent<Camera>();
 
-        ads = false;
         firing = false;
         reloading = false;
     }
@@ -33,7 +31,6 @@ public class Gun : MonoBehaviour
         stats.currentMag = stats.magazineSize;
         stats.currentAmmo = stats.maxAmmo;
         fov = cam.fieldOfView;
-        UpdateGunUI();
     }
 
     // Update is called once per frame
@@ -41,6 +38,7 @@ public class Gun : MonoBehaviour
     {
         if (stats.automatic)
         {
+            // Checks if the mouse button is still pressed to keep firing
             if (Input.GetMouseButton(0) && !firing && !reloading && stats.currentMag > 0)
             {
                 Shoot();
@@ -48,11 +46,13 @@ public class Gun : MonoBehaviour
         }
         else
         {
+            // Checks individual clicks for non-automatic weapons
             if (Input.GetMouseButtonDown(0) && !firing && !reloading && stats.currentMag > 0)
             {
                 Shoot();
             }
         }
+
         // reload if reload button is pressed while current mag isn't full and not reloading
         // OR left mouse button is held down while an automatic weapon runs out of ammo
         // OR left mouse button is pressed while a non-automatic weapon's magazine is empty
@@ -71,6 +71,7 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
+        PlayRandomSound(stats.soundBank);
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, stats.range, enemyLayer))
         {
             if (hit.transform.gameObject.GetComponent<Enemy>() != null)
@@ -85,31 +86,28 @@ public class Gun : MonoBehaviour
         firing = true;
         Invoke(nameof(RefreshFiring), stats.fireRate);
     }
-
+    public void PlayRandomSound(AudioClip[] clips)
+    {
+        AudioSource.PlayClipAtPoint(clips[Random.Range(0, clips.Length - 1)], transform.position);
+    }
     void Reload()
     {
+        AudioSource.PlayClipAtPoint(stats.reloadSound, transform.position);
         reloading = true;
         Invoke(nameof(RefreshReload), stats.reloadTime);
     }
 
     void ToggleADS()
     {
-        switch(Input.GetMouseButton(1))
+        switch(Input.GetMouseButtonDown(1))
         {
             case false:
                 cam.fieldOfView = fov;
-                ads = false;
                 break;
             case true:
                 cam.fieldOfView = fov / stats.scopeMultiplier;
-                ads = true;
                 break;
         }
-    }
-
-    public void UpdateGunUI()
-    {
-        uiManager.SetAmmoText(stats.currentMag, stats.maxAmmo - stats.currentMag);
     }
 
     void RefreshFiring()
@@ -122,10 +120,9 @@ public class Gun : MonoBehaviour
         stats.currentMag = stats.magazineSize;
         UpdateGunUI();
     }
-
-    private void OnDrawGizmos()
+    public void UpdateGunUI()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(cam.transform.position, cam.transform.forward * stats.range);
+        UIManager.Instance.SetAmmoText(stats.currentMag, stats.currentAmmo - stats.currentMag);
     }
 }
+

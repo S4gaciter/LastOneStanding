@@ -4,83 +4,155 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public List<GameObject> inventory;
-    public GameObject startingWeapon;
+    public enum WeaponType
+    {
+        Pistol,
+        SMG,
+        AssaultRifle,
+        Shotgun,
+        SniperRifle
+    }
+
+    public static Inventory Instance;
+
+    public List<GameObject> weapons;
     int currentWeapon = 0;
 
+    [SerializeField] private GameObject primary = null;
+    [SerializeField] private GameObject secondary = null;
+    
     // Initialization
-    void Awake()
+    void Start()
     {
-        inventory.Capacity = 2;
-    }
-    private void Start()
-    {
-        AddToInventory(startingWeapon);
-        inventory[currentWeapon].SetActive(true);
+        SetPrimary(WeaponType.Pistol);
+        SetSecondary(WeaponType.SMG);
+        HideAllWeapons();
+        primary.SetActive(true);
+        primary.GetComponent<Gun>().UpdateGunUI();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.mouseScrollDelta.y > 0.1f && inventory.Count > 1)
+        if ((Input.mouseScrollDelta.y > 0.1f || Input.mouseScrollDelta.y < -0.1f) && secondary != null)
         {
-            NextWeapon();
-        }
-        else if (Input.mouseScrollDelta.y < - 0.1f && inventory.Count > 1)
-        {
-            PreviousWeapon();
+            SwapWeapon();
         }
     }
 
-    void NextWeapon()
+    void SwapWeapon()
     {
-        inventory[currentWeapon].SetActive(false);
-        currentWeapon++;
-        if (currentWeapon >= inventory.Count)
+        switch(currentWeapon)
         {
-            currentWeapon = 0;
+            case 0:
+                primary.SetActive(false);
+                secondary.SetActive(true);
+                currentWeapon = 1;
+                break;
+            case 1:
+                primary.SetActive(true);
+                secondary.SetActive(false);
+                currentWeapon = 0;
+                break;
         }
-        inventory[currentWeapon].SetActive(true);
-        inventory[currentWeapon].GetComponent<Gun>().UpdateGunUI();
     }
 
-    void PreviousWeapon()
+    public void ExchangeWeapon(WeaponType weapon)
     {
-        inventory[currentWeapon].SetActive(false);
-        currentWeapon--;
-        if (currentWeapon < 0)
+        if (secondary != null)
         {
-            currentWeapon = inventory.Count - 1;
-        }
-        inventory[currentWeapon].SetActive(true);
-        inventory[currentWeapon].GetComponent<Gun>().UpdateGunUI();
-    }
-
-    public void AddToInventory(GameObject weapon)
-    {
-        if (inventory[currentWeapon] != null)
-        {
-            inventory[currentWeapon].SetActive(false);
-        }
-        if (inventory.Count < inventory.Capacity)
-        {
-            inventory.Add(weapon);
+            switch (currentWeapon)
+            {
+                case 0:
+                    SetPrimary(weapon);
+                    break;
+                case 1:
+                    SetSecondary(weapon);
+                    break;
+            }
         }
         else
         {
-            inventory[currentWeapon] = weapon;
+            SetSecondary(weapon);
         }
-        Instantiate(weapon, transform);
     }
 
-    public void RemoveFromInventory()
+    void SetPrimary(WeaponType weapon)
     {
-        inventory.RemoveAt(currentWeapon);
-        Destroy(transform.GetChild(currentWeapon).gameObject);
+        secondary.SetActive(false);
+        primary.SetActive(false);
+        switch(weapon)
+        {
+            case WeaponType.Pistol:
+                primary = GetPistol();
+                break;
+            case WeaponType.SMG:
+                primary = GetSMG();
+                break;
+            case WeaponType.AssaultRifle:
+                primary = GetAssaultRifle();
+                break;
+            case WeaponType.Shotgun:
+                primary = GetShotgun();
+                break;
+            case WeaponType.SniperRifle:
+                primary = GetSniperRifle();
+                break;
+        }
+        primary.SetActive(true);
     }
 
-    public bool HasWeapon(GameObject weapon)
+    void SetSecondary(WeaponType weapon)
     {
-        return inventory.Contains(weapon);
+        primary.SetActive(false);
+        secondary.SetActive(false);
+        switch (weapon)
+        {
+            case WeaponType.Pistol:
+                secondary = GetPistol();
+                break;
+            case WeaponType.SMG:
+                secondary = GetSMG();
+                break;
+            case WeaponType.AssaultRifle:
+                secondary = GetAssaultRifle();
+                break;
+            case WeaponType.Shotgun:
+                secondary = GetShotgun();
+                break;
+            case WeaponType.SniperRifle:
+                secondary = GetSniperRifle();
+                break;
+        }
+        secondary.SetActive(true);
+    }
+
+    GameObject GetPistol()
+    {
+        return weapons[0];
+    }
+    GameObject GetSMG()
+    {
+        return weapons[1];
+    }
+    GameObject GetAssaultRifle()
+    {
+        return weapons[2];
+    }
+    GameObject GetShotgun()
+    {
+        return weapons[3];
+    }
+    GameObject GetSniperRifle()
+    {
+        return weapons[4];
+    }
+
+    void HideAllWeapons()
+    {
+        for(int i = 0; i < weapons.Count; i++)
+        {
+            weapons[i].SetActive(false);
+        }
     }
 }

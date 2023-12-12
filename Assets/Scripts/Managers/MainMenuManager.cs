@@ -5,16 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    Canvas MainMenuUI;
-    Canvas SettingsUI;
+    public static MainMenuManager Instance;
+    public Canvas MainMenuUI;
+    public Canvas SettingsUI;
     // Initialization
     void Awake()
     {
-        MainMenuUI = GameObject.Find("MainMenuUI").GetComponent<Canvas>();
-        SettingsUI = GameObject.Find("SettingsUI").GetComponent<Canvas>();
+
     }
     void Start()
     {
+        Instance = this;
         DefaultMenu();
     }
 

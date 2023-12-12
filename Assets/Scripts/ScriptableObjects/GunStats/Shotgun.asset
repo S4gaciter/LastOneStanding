@@ -16,10 +16,15 @@ MonoBehaviour:
   damage: 34
   range: 30
   fireRate: 1.4
-  reloadTime: 0.8
+  reloadTime: 2.4
   scopeMultiplier: 1.1
   maxAmmo: 60
   magazineSize: 8
   currentAmmo: 60
   currentMag: 8
+  soundBank:
+  - {fileID: 8300000, guid: 3e2334e4fea6ff2459ee91301a9b986c, type: 3}
+  - {fileID: 8300000, guid: 6329081dd4b79c44d9059c0d0d5cb427, type: 3}
+  - {fileID: 8300000, guid: 730267e47bb575d42ac2c7dfec776f2b, type: 3}
+  reloadSound: {fileID: 8300000, guid: b0e02165109e15c4aac35d06ef27e85b, type: 3}
   automatic: 0

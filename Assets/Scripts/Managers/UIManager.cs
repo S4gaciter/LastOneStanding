@@ -12,9 +12,15 @@ public class UIManager : MonoBehaviour
     Text ammoText;
     Text creditText;
 
+    public Fade blackScreen;
+
+    public static UIManager Instance;
+
     //Initialization
     private void Awake()
     {
+        Instance = this;
+
         // Gameplay UI
         playerUI = GameObject.Find("PlayerUI").GetComponent<Canvas>();
 
@@ -24,6 +30,7 @@ public class UIManager : MonoBehaviour
         healthText      = GameObject.Find("HealthText").GetComponent<Text>();
         creditText      = GameObject.Find("CreditsText").GetComponent<Text>();
         interactionText = GameObject.Find("InteractionText").GetComponent<Text>();
+        blackScreen.BeginFadeIn();
     }
 
     // Toggle Functions
