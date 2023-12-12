@@ -8,12 +8,10 @@ public class Interactible : MonoBehaviour
     public int cost;
     [HideInInspector] public string interactionText;
     [SerializeField] private InteractionType interactType;
-    
-    Inventory inventory;
 
     public void Awake()
     {
-        inventory = GameObject.Find("WeaponHandle").GetComponent<Inventory>();
+
     }
 
     public void Start()
@@ -53,14 +51,14 @@ public class Interactible : MonoBehaviour
         switch (interactType)
         {
             case InteractionType.Test:
-                interactionText = $"F - Gain 100 points";
+                interactionText = $"E - Gain 100 points";
                 break;
             case InteractionType.Weapon:
                 WeaponEntity buyable = gameObject.GetComponent<WeaponEntity>();
-                interactionText = $"F - Buy {buyable.GetWeaponName()} for {cost}";
+                interactionText = $"E - Buy {buyable.GetWeaponName()} for {cost}";
                 break;
             case InteractionType.Door:
-                interactionText = $"F - Open door for {cost}";
+                interactionText = $"E - Open door for {cost}";
                 break;
         }
     }

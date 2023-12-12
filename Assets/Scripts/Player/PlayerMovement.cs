@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float horizontal;
     private float vertical;
+    private float baseSpeed;
 
     private Rigidbody rb;
 

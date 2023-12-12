@@ -12,7 +12,7 @@ public class Gun : MonoBehaviour
 
     public GunStats stats;
 
-    Camera cam;
+    public Camera cam;
     float fov;
 
     bool firing;
@@ -21,8 +21,6 @@ public class Gun : MonoBehaviour
     // Initialization
     private void Awake()
     {
-        cam = GameObject.Find("PlayerCamera").GetComponent<Camera>();
-
         firing = false;
         reloading = false;
     }
@@ -71,11 +69,14 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
+        firing = true;
         PlayRandomSound(stats.soundBank);
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hit, stats.range, enemyLayer))
         {
+            Debug.Log("Hit enemy layer");
             if (hit.transform.gameObject.GetComponent<Enemy>() != null)
             {
+                Debug.Log("Hit Enemy");
                 Enemy enemy = hit.transform.gameObject.GetComponent<Enemy>();
                 enemy.RecieveDamage(stats.damage);
             }
@@ -83,7 +84,6 @@ public class Gun : MonoBehaviour
         stats.currentMag--;
         stats.currentAmmo--;
         UpdateGunUI();
-        firing = true;
         Invoke(nameof(RefreshFiring), stats.fireRate);
     }
     public void PlayRandomSound(AudioClip[] clips)
@@ -110,6 +110,11 @@ public class Gun : MonoBehaviour
         }
     }
 
+    public bool IsReloading()
+    {
+        return reloading;
+    }
+
     void RefreshFiring()
     {
         firing = false;
@@ -123,6 +128,15 @@ public class Gun : MonoBehaviour
     public void UpdateGunUI()
     {
         UIManager.Instance.SetAmmoText(stats.currentMag, stats.currentAmmo - stats.currentMag);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (this.isActiveAndEnabled)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(cam.transform.position, cam.transform.forward * stats.range);
+        }
     }
 }
 

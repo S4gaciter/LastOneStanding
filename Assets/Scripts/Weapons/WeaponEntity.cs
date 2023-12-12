@@ -6,7 +6,6 @@ public class WeaponEntity : MonoBehaviour
 {
     public int cost;
     public string gunName;
-    public Inventory.WeaponType weapon;
 
     private void Awake()
     {
@@ -20,6 +19,6 @@ public class WeaponEntity : MonoBehaviour
 
     public void BuyWeapon()
     {
-        Inventory.Instance.ExchangeWeapon(weapon);
+        
     }
 }

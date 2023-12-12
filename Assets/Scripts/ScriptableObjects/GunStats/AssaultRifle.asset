@@ -15,13 +15,13 @@ MonoBehaviour:
   gunName: Assault Rifle
   damage: 28
   range: 150
-  fireRate: 1.8
+  fireRate: 0.15
   reloadTime: 2.8
   scopeMultiplier: 1.2
   maxAmmo: 450
   magazineSize: 45
-  currentAmmo: 450
-  currentMag: 45
+  currentAmmo: 446
+  currentMag: 41
   soundBank:
   - {fileID: 8300000, guid: 2d75f9f8906d4d04aabcb2c7492acd3e, type: 3}
   - {fileID: 8300000, guid: 24b302caaf86e494e967fc40900cc744, type: 3}

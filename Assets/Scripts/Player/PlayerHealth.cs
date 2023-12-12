@@ -18,17 +18,6 @@ public class PlayerHealth : MonoBehaviour
     private bool healFlag;
     private float healTimer;
     HealState healState;
-
-    GameManager gameManager;
-
-    UIManager uiManager;
-
-    private void Awake()
-    {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
-
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -56,7 +45,7 @@ public class PlayerHealth : MonoBehaviour
         }
         if (health <= 0)
         {
-            gameManager.EndGame();
+            GameManager.Instance.EndGame();
         }
     }
 
@@ -72,7 +61,7 @@ public class PlayerHealth : MonoBehaviour
     {
         health += Time.deltaTime * regenMultiplier;
         health = Mathf.Clamp(health, 0, maxHealth);
-        uiManager.SetHealthText(health);
+        UIManager.Instance.SetHealthText(health);
     }
 
     public void ReceiveDamage(int amount)
@@ -81,6 +70,6 @@ public class PlayerHealth : MonoBehaviour
         healFlag = false;
         healTimer = 2.0f;
         healState = HealState.Waiting;
-        uiManager.SetHealthText(health);
+        UIManager.Instance.SetHealthText(health);
     }
 }

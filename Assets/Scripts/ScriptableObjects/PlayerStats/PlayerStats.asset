@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   groundDrag: 5
-  moveSpeed: 5
+  moveSpeed: 7
   jumpForce: 5
   jumpCooldown: 0.25
   airMultiplier: 1.4
